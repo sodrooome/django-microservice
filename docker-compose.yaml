@@ -1,7 +1,7 @@
 services:
-  poll_app:
+  poll-app:
     build: ./polls
-    command: bash -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8001"
+    command: bash -c "python3 manage.py makemigrations polls && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8001"
     volumes:
       - ./polls:/app
     ports:
@@ -10,9 +10,9 @@ services:
     depends_on:
       - mongodb
 
-  question_app:
+  question-app:
     build: ./question
-    command: bash -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8002"
+    command: bash -c "python3 manage.py makemigrations question && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8002"
     volumes:
       - ./question:/app
     ports:
@@ -21,9 +21,9 @@ services:
     depends_on:
       - mongodb
 
-  vote_app:
+  vote-app:
     build: ./vote
-    command: bash -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8003"
+    command: bash -c "python3 manage.py makemigrations vote && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8003"
     volumes:
       - ./vote:/app
     ports:
@@ -43,6 +43,6 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - poll_app
-      - question_app
-      - vote_app
+      - poll-app
+      - question-app
+      - vote-app
