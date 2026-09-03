@@ -14,9 +14,9 @@ flowchart TD
     end
 
     subgraph services["Django services (one container each)"]
-        poll["poll_app\nDjango + DRF\n:8001"]
-        question["question_app\nDjango + DRF\n:8002"]
-        vote["vote_app\nDjango + DRF\n:8003"]
+        poll["poll-app\nDjango + DRF\n:8001"]
+        question["question-app\nDjango + DRF\n:8002"]
+        vote["vote-app\nDjango + DRF\n:8003"]
     end
 
     subgraph data["MongoDB container"]
@@ -44,7 +44,7 @@ Each service is its own Django project, container, and database. There is no sha
 
 This is only an example of scaling Django features using a microservices pattern. Is Django with microservices a good idea? It **depends** on your perspective. Django can feel bloated, or even overkill, in a microservices setup, since it's a batteries-included framework. On the other hand, it can make sense if you have a good reason for it: large services that need to scale independently, or a database you're confident can't handle everything on its own.
 
-The models are based on the Django polls tutorial from the Django documentation, but split here into three services: `Polls`, `Question`, and `Vote`.
+The models are based on the Django polls tutorial from the Django documentation, but split here into three services: `Polls`, `Question` and `Vote`.
 
 Another big difference is that microservices favor loose coupling, which runs against Django's naturally tightly coupled style.
 
@@ -61,7 +61,7 @@ This depends on how much traffic you expect, how many services you want to scale
 
 ### Issues
 
-The original issue here was fetching data across services: `vote` needs to know a `question` exists, but each service has its own database and codebase, so a Django `ForeignKey` between them was never actually possible. That's now resolved the way Tom Christie suggested back when this was first written: `vote` stores the question's id and validates it with a synchronous HTTP request to the question service (see `vote/vote/serializers.py`) instead of pretending it's a database relation.
+The original issue here was fetching data across services: `vote` needs to know a `question` exists, but each service has its own database and codebase, so a Django `ForeignKey` between them was never actually possible. That's now resolved the way Tom Christie suggested back when this was first written: `vote` stores the question's id and validates it with a synchronous HTTP request to the question service instead of pretending it's a database relation.
 
 ### Are We Ready (Yet)?
 
@@ -75,3 +75,7 @@ Still no. This remains a demo and reference project, not a production template. 
 - Once the build completes, run `docker compose up -d` (or `make up`)
 - Other commands include `make down` to stop the services, and `make logs` to tail the logs of all services
 - Navigate to localhost, something like `0.0.0.0:8001` for the `Poll` API, and so on
+
+### Testing
+
+With the stack running, try to run `make test` which is, it will runs a small end-to-end check across all three services: create a question, vote on it and confirm it shows up when viewing polls. It also checks that voting on a question id that doesn't exist is rejected. All integration tests should pass without errors.

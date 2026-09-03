@@ -1,3 +1,6 @@
 __pycache__/
 *.pyc
 .env
+
+# generated at container boot (see docker-compose.yaml), never committed
+*/*/migrations/

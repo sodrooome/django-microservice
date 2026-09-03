@@ -1,4 +1,4 @@
-.PHONY: build up down logs
+.PHONY: build up down logs test
 
 build:
 	docker compose build
@@ -11,3 +11,6 @@ down:
 
 logs:
 	docker compose logs -f
+
+test:
+	python3 tests/test_integration.py -v
