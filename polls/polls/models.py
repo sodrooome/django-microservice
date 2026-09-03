@@ -1,10 +1,11 @@
 # nosql models for database
 
-from djongo import models
+from django.db import models
+
 
 class Poll(models.Model):
-	vote = models.FloatField()
-	category = models.CharField(max_length=100)
+    vote = models.FloatField()
+    category = models.CharField(max_length=100)
 
-	def __str__(self):
-		return self.category
+    def __str__(self):
+        return self.category

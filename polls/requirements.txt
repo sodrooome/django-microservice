@@ -1,7 +1,5 @@
-Django
-djangorestframework
-djongo
-psycopg2-binary
-gunicorn
-requests
-sqlparse==0.2.4
+Django==5.2.*
+djangorestframework==3.17.*
+django-mongodb-backend==5.2.*
+gunicorn==23.*
+requests==2.32.*

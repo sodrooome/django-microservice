@@ -1,60 +1,47 @@
-version: '3'
-
 services:
   poll_app:
     build: ./polls
-    command: bash -c "python3 ./polls/manage.py makemigrations && python3 ./polls/manage.py migrate && python3 ./polls/manage.py runserver 0.0.0.0:8001"
+    command: bash -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8001"
     volumes:
-      - .:/app
+      - ./polls:/app
     ports:
       - "8001:8001"
     restart: always
     depends_on:
       - mongodb
-    links:
-      - mongodb
 
   question_app:
     build: ./question
-    command: bash -c "python3 ./question/manage.py makemigrations && python3 ./question/manage.py migrate && python3 ./question/manage.py runserver 0.0.0.0:8002"
+    command: bash -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8002"
     volumes:
-      - .:/app
+      - ./question:/app
     ports:
       - "8002:8002"
     restart: always
     depends_on:
       - mongodb
-    links:
-      - mongodb
 
   vote_app:
     build: ./vote
-    command: bash -c "python3 ./vote/manage.py makemigrations && python3 ./vote/manage.py migrate && python3 ./vote/manage.py runserver 0.0.0.0:8003"
+    command: bash -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8003"
     volumes:
-      - .:/app
+      - ./vote:/app
     ports:
       - "8003:8003"
     restart: always
     depends_on:
       - mongodb
-    links:
-      - mongodb
 
   mongodb:
     restart: always
-    image: mongo:3.4.7
+    image: mongo:7.0
     ports:
       - "27017:27017"
-    command: mongodb
 
   nginx:
     build: ./conf
     ports:
-      - 80:80
-    links:
-      - poll_app
-      - question_app
-      - vote_app
+      - "80:80"
     depends_on:
       - poll_app
       - question_app

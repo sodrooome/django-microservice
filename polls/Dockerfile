@@ -1,10 +1,10 @@
-FROM python:3.6.4-slim
+FROM python:3.12-slim
 
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED=1
 
-RUN mkdir /app
 WORKDIR /app
 
-COPY ..
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN pip3 install -r requirements.txt
+COPY . .
