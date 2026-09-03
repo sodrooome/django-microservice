@@ -5,6 +5,10 @@ from .models import Vote
 
 
 class VoteSerializer(serializers.ModelSerializer):
+    # MongoDB primary keys are ObjectIds: DRF's auto-generated id field
+    # assumes an integer PK and errors serializing them, so make it explicit
+    id = serializers.CharField(read_only=True)
+
     class Meta:
         model = Vote
         fields = "__all__"
